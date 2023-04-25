@@ -1,0 +1,4 @@
+Eng katta qiymat: 77
+Eng kichik qiymat: -113
+Eng katta va Eng kichik qiymatlari yig'indisi: -36
+birinchi va oxirgi komponentning farqi: 73
