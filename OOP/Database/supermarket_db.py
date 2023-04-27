@@ -18,6 +18,22 @@ def check_category(name):
         return True
     return False
 
+def check_product(name):
+    conn = connect()
+    
+    cur = conn.cursor()
+    cur.execute(f"""
+            SELECT name 
+                FROM product
+                WHERE name = '{name}'
+                """)
+    data = cur.fetchall()
+    conn.commit()
+    conn.close()
+    if data:
+        return True
+    return False
+
 def add_category(name):
     if check_category(name):
         print("Bu kategoriya mavjud!")
@@ -32,17 +48,35 @@ def add_category(name):
     conn.commit()
     conn.close()
 
-def add_product(category_id, product_name, product_price, product_discount=None):
+def add_product(data):
+    if check_product(data.get('name')):
+        print("Bu mahsulot mavjud!")
+        return 0
     conn = connect()
     
     cur = conn.cursor()
-    cur.execute(f"""
-            INSERT INTO product (category_id, name, price, discount, created_at)
-            VALUES ({category_id}, '{product_name}',
-            {product_price}, {product_discount}, {datetime.datetime.now()})
+    if data.get('discount'):
+        cur.execute(f"""
+                INSERT INTO product (category_id, name, price, discount, created_at)
+                VALUES (
+                    {data.get('category_id')},
+                    '{data.get('name')}',
+                    {data.get('price')},
+                    {data.get('discount')},
+                    '{datetime.datetime.now().strftime("%H:%M %d.%m.%Y")}')
+                """)
+    else:
+        cur.execute(f"""
+                INSERT INTO product (category_id, name, price, created_at)
+                VALUES (
+                    {data.get('category_id')},
+                    '{data.get('name')}',
+                    {data.get('price')},
+                    '{datetime.datetime.now().strftime("%H:%M %d.%m.%Y")}')
                 """)
     conn.commit()
     conn.close()
+    
 
 def get_categories():
     conn = connect()

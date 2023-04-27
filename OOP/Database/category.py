@@ -11,6 +11,7 @@ class Category():
     def get_category(self, id):
         category = db.get_category(id)
         print(f"id: {category[0]} name: {category[1]}")
+        return category[1]
 
     def get_product(self, id):
         product = db.get_product(id)
@@ -40,7 +41,7 @@ class Category():
     def verify(self):
         confirm_data = input("""O'chirishmoqchimisiz?\n
                              Xa: Ixtiyoriy so'zni yuboring\n
-                             Yo'q: 0""")
+                             Yo'q: 0\n =>""")
         if confirm_data=='0':
             return False
         return True
